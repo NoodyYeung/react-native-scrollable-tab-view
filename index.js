@@ -1,8 +1,7 @@
-const React = require('react');
-const { Component } = React;
-const { ViewPropTypes } = ReactNative = require('react-native');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+const { ViewPropTypes, Component } = ReactNative = require('react-native');
 const {
   Dimensions,
   View,
@@ -329,23 +328,21 @@ const ScrollableTabView = createReactClass({
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
 
-    if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
-      return;
+    if (Math.round(width) !== Math.round(this.state.containerWidth)) {
+      if (Platform.OS === 'ios') {
+        const containerWidthAnimatedValue = new Animated.Value(width);
+        // Need to call __makeNative manually to avoid a native animated bug. See
+        // https://github.com/facebook/react-native/pull/14435
+        containerWidthAnimatedValue.__makeNative();
+        scrollValue = Animated.divide(this.state.scrollXIOS, containerWidthAnimatedValue);
+        this.setState({ containerWidth: width, scrollValue, });
+      } else {
+        this.setState({ containerWidth: width, });
+      }
+      this.requestAnimationFrame(() => {
+        this.goToPage(this.state.currentPage);
+      });
     }
-    
-    if (Platform.OS === 'ios') {
-      const containerWidthAnimatedValue = new Animated.Value(width);
-      // Need to call __makeNative manually to avoid a native animated bug. See
-      // https://github.com/facebook/react-native/pull/14435
-      containerWidthAnimatedValue.__makeNative();
-      scrollValue = Animated.divide(this.state.scrollXIOS, containerWidthAnimatedValue);
-      this.setState({ containerWidth: width, scrollValue, });
-    } else {
-      this.setState({ containerWidth: width, });
-    }
-    this.requestAnimationFrame(() => {
-      this.goToPage(this.state.currentPage);
-    });
   },
 
   _children(children = this.props.children) {
