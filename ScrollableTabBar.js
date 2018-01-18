@@ -1,7 +1,7 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 const { ViewPropTypes } = ReactNative = require('react-native');
-const PropTypes = require('prop-types');
-const createReactClass = require('create-react-class');
 const {
   View,
   Animated,
@@ -30,7 +30,7 @@ const ScrollableTabBar = createReactClass({
     textStyle: Text.propTypes.style,
     renderTab: PropTypes.func,
     underlineStyle: ViewPropTypes.style,
-    onScroll: PropTypes.func,
+    onScroll:PropTypes.func,
   },
 
   getDefaultProps() {

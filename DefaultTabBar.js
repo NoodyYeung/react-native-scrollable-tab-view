@@ -1,7 +1,8 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+
 const { ViewPropTypes } = ReactNative = require('react-native');
-const PropTypes = require('prop-types');
-const createReactClass = require('create-react-class');
 const {
   StyleSheet,
   Text,
